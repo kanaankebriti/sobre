@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="3" height="3" tilewidth="128" tileheight="128" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="g1" tilewidth="128" tileheight="128" tilecount="15" columns="0">
+  <grid orientation="orthogonal" width="1" height="1"/>
+  <tile id="0">
+   <image width="128" height="128" source="../tileset/0.bmp"/>
+  </tile>
+  <tile id="1">
+   <image width="128" height="128" source="../tileset/1.bmp"/>
+  </tile>
+  <tile id="2">
+   <image width="128" height="128" source="../tileset/2.bmp"/>
+  </tile>
+  <tile id="3">
+   <image width="128" height="128" source="../tileset/3.bmp"/>
+  </tile>
+  <tile id="4">
+   <image width="128" height="128" source="../tileset/4.bmp"/>
+  </tile>
+  <tile id="5">
+   <image width="128" height="128" source="../tileset/5.bmp"/>
+  </tile>
+  <tile id="6">
+   <image width="128" height="128" source="../tileset/6.bmp"/>
+  </tile>
+  <tile id="7">
+   <image width="128" height="128" source="../tileset/7.bmp"/>
+  </tile>
+  <tile id="8">
+   <image width="128" height="128" source="../tileset/8.bmp"/>
+  </tile>
+  <tile id="9">
+   <image width="128" height="128" source="../tileset/9.bmp"/>
+  </tile>
+  <tile id="10">
+   <image width="128" height="128" source="../tileset/10.bmp"/>
+  </tile>
+  <tile id="11">
+   <image width="128" height="128" source="../tileset/11.bmp"/>
+  </tile>
+  <tile id="12">
+   <image width="128" height="128" source="../tileset/12.bmp"/>
+  </tile>
+  <tile id="13">
+   <image width="128" height="128" source="../tileset/13.bmp"/>
+  </tile>
+  <tile id="14">
+   <image width="128" height="128" source="../tileset/14.bmp"/>
+  </tile>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="3" height="3">
+  <data encoding="csv">
+6,10,3,
+8,6,10,
+1,8,6
+</data>
+ </layer>
+</map>

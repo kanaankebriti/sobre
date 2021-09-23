@@ -1,0 +1,41 @@
+{
+	"textures": [
+		{"path": "/textures/0.json", "type": "text"},
+		{"path": "/textures/1.json", "type": "text"},
+		{"path": "/textures/2.json", "type": "text"},
+		{"path": "/textures/3.json", "type": "text"},
+		{"path": "/textures/4.json", "type": "text"},
+		{"path": "/textures/5.json", "type": "text"},
+		{"path": "/textures/6.json", "type": "text"},
+		{"path": "/textures/7.json", "type": "text"},
+		{"path": "/textures/8.json", "type": "text"},
+		{"path": "/textures/9.json", "type": "text"},
+		{"path": "/textures/10.bmp", "type": "bmp"},
+		{"path": "/textures/11.svg", "type": "svg"},
+		{"path": "/textures/12.svg", "type": "svg"},
+		{"path": "/textures/13.svg", "type": "svg"},
+		{"path": "/textures/14.svg", "type": "svg"},
+		{"path": "/textures/15.svg", "type": "svg"},
+		{"path": "/textures/16.json", "type": "text"},
+		{"path": "/textures/17.svg", "type": "svg"},
+		{"path": "/textures/18.svg", "type": "svg"},
+		{"path": "/textures/19.svg", "type": "svg"}
+	],
+	"sounds": [
+		{"path": "/sounds/bitchime.wav", "type": "wav"},
+		{"path": "/sounds/A6.ogg", "type": "ogg"},
+		{"path": "/sounds/A7.ogg", "type": "ogg"},
+		{"path": "/sounds/B6.ogg", "type": "ogg"},
+		{"path": "/sounds/B7.ogg", "type": "ogg"},
+		{"path": "/sounds/C6.ogg", "type": "ogg"},
+		{"path": "/sounds/C7.ogg", "type": "ogg"},
+		{"path": "/sounds/D6.ogg", "type": "ogg"},
+		{"path": "/sounds/D7.ogg", "type": "ogg"},
+		{"path": "/sounds/E6.ogg", "type": "ogg"},
+		{"path": "/sounds/E7.ogg", "type": "ogg"},
+		{"path": "/sounds/F6.ogg", "type": "ogg"},
+		{"path": "/sounds/F7.ogg", "type": "ogg"},
+		{"path": "/sounds/G6.ogg", "type": "ogg"},
+		{"path": "/sounds/G7.ogg", "type": "ogg"}
+	]
+}

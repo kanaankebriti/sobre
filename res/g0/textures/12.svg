@@ -1,0 +1,15 @@
+<svg width="400" height="100">
+	<rect width="400" height="100" stroke-width="10px" stroke="#404040" fill="gray"/>
+	<g fill="#353535">
+		<polygon points="14,49 24,49 24,21 52,21 52,11 14,11"/>
+		<polygon points="14,51 24,51 24,79 52,79 52,89 14,89"/>
+		<polygon points="54,21 54,11 92,11 92,49 82,49 82,21"/>
+		<polygon points="54,79 54,89 92,89 92,51 82,51 82,79"/>
+	</g>
+	<g fill="#505050">
+		<polygon points="16,47 22,47 22,19 50,19 50,13 16,13"/>
+		<polygon points="16,53 22,53 22,81 50,81 50,87 16,87"/>
+		<polygon points="56,19 56,13 90,13 90,47 84,47 84,19"/>
+		<polygon points="56,81 56,87 90,87 90,53 84,53 84,81"/>
+	</g>
+</svg>

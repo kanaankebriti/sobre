@@ -1,0 +1,42 @@
+{
+	"max_lvl": 3,
+	"textures": [
+		{"path": "/textures/0.json", "type": "text"},
+		{"path": "/textures/1.json", "type": "text"},
+		{"path": "/textures/2.json", "type": "text"},
+		{"path": "/textures/3.json", "type": "text"},
+		{"path": "/textures/4.json", "type": "text"},
+		{"path": "/textures/5.json", "type": "text"},
+		{"path": "/textures/6.json", "type": "text"},
+		{"path": "/textures/7.json", "type": "text"},
+		{"path": "/textures/8.json", "type": "text"},
+		{"path": "/textures/9.json", "type": "text"},
+		{"path": "/textures/10.bmp", "type": "bmp"},
+		{"path": "/textures/11.svg", "type": "svg"},
+		{"path": "/textures/12.svg", "type": "svg"},
+		{"path": "/textures/13.svg", "type": "svg"},
+		{"path": "/textures/14.svg", "type": "svg"},
+		{"path": "/textures/15.svg", "type": "svg"},
+		{"path": "/textures/16.svg", "type": "svg"},
+		{"path": "/textures/17.svg", "type": "svg"},
+		{"path": "/textures/18.svg", "type": "svg"},
+		{"path": "/textures/19.svg", "type": "svg"}
+	],
+	"sounds": [
+		{"path": "/sounds/bitchime.wav", "type": "wav"},
+		{"path": "/sounds/A5.ogg", "type": "ogg"},
+		{"path": "/sounds/A4.ogg", "type": "ogg"},
+		{"path": "/sounds/B5.ogg", "type": "ogg"},
+		{"path": "/sounds/B4.ogg", "type": "ogg"},
+		{"path": "/sounds/C5.ogg", "type": "ogg"},
+		{"path": "/sounds/C4.ogg", "type": "ogg"},
+		{"path": "/sounds/D5.ogg", "type": "ogg"},
+		{"path": "/sounds/D4.ogg", "type": "ogg"},
+		{"path": "/sounds/E5.ogg", "type": "ogg"},
+		{"path": "/sounds/E4.ogg", "type": "ogg"},
+		{"path": "/sounds/F5.ogg", "type": "ogg"},
+		{"path": "/sounds/F4.ogg", "type": "ogg"},
+		{"path": "/sounds/G5.ogg", "type": "ogg"},
+		{"path": "/sounds/G4.ogg", "type": "ogg"}
+	]
+}
