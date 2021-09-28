@@ -13,8 +13,8 @@ bool init_sdl(SDL_Renderer** renderer, SDL_Window** window)
 			SDL_WINDOWPOS_CENTERED,
 			WIN_WIDTH,
 			WIN_HEIGHT,
-			//0
 			SDL_WINDOW_VULKAN
+			//SDL_WINDOW_VULKAN
 			//SDL_WINDOW_FULLSCREEN | SDL_WINDOW_VULKAN
 			//SDL_WINDOW_FULLSCREEN_DESKTOP
 		);
@@ -28,7 +28,8 @@ bool init_sdl(SDL_Renderer** renderer, SDL_Window** window)
 			SDL_WINDOWPOS_CENTERED,
 			WIN_WIDTH,
 			WIN_HEIGHT,
-			SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL
+			0
+			//SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL
 			//SDL_WINDOW_FULLSCREEN_DESKTOP
 		);
 	// if none works

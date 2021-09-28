@@ -1,4 +1,5 @@
-#define TIP_SHADOW_FIX_DEG 2		// fill the gap!
+#define TIP_SHADOW_FIX_WIDTH 3		// fill the gap!
+#define TIP_SHADOW_FIX_ANG 3		// fill the gap!
 
 #include "sobre_engine.h"
 #include <SDL2/SDL2_gfxPrimitives.h>
@@ -96,6 +97,29 @@ int main()
 			return EXIT_FAILURE;
 		}
 	}*/
+	SDL_Surface* img_surface = NULL;
+	SDL_Texture* shadow_texture = NULL;
+	SDL_Texture* black_light_texture = NULL;
+	SDL_Texture* white_light_texture = NULL;
+	SDL_Texture* background_texture = NULL;
+	SDL_Rect light_rect;
+
+	light_rect.w = 700;
+	light_rect.h = 700;
+
+	shadow_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, WIN_WIDTH, WIN_HEIGHT);
+	img_surface = IMG_Load("wall.png");
+	background_texture = SDL_CreateTextureFromSurface(renderer, img_surface);
+	img_surface = IMG_Load("plight-black.png");
+	black_light_texture = SDL_CreateTextureFromSurface(renderer, img_surface);
+	img_surface = IMG_Load("plight-white.png");
+	white_light_texture = SDL_CreateTextureFromSurface(renderer, img_surface);
+
+	// set blends
+	SDL_SetTextureBlendMode(shadow_texture, SDL_BLENDMODE_MUL);
+	SDL_SetTextureBlendMode(black_light_texture, SDL_BLENDMODE_MUL);
+	SDL_SetTextureBlendMode(white_light_texture, SDL_BLENDMODE_BLEND);
+
 	int mouse_pos_x, mouse_pos_y;
 
 	struct point_2d {
@@ -127,7 +151,7 @@ int main()
 	light.x = 400;
 	light.y = 400;
 	light.z = 70;
-	light.range = 300;
+	light.range = 700;
 
 	cast_circle culumn1;
 	culumn1.x = 600;
@@ -155,29 +179,9 @@ int main()
 		(column1_shadow_body.x4 + column1_shadow_body.x3) / 2,
 		(column1_shadow_body.y4 + column1_shadow_body.y3) / 2
 	};
-	double shadow_tip_radius =
-		sqrt(
-			pow(shadow_far_edge_center.x - column1_shadow_body.x3, 2.f) +
-			pow(shadow_far_edge_center.y - column1_shadow_body.y3, 2.f)
-		);
-	angle =
-		atan2(column1_shadow_body.y4 - shadow_far_edge_center.y, column1_shadow_body.x4 - shadow_far_edge_center.x);
+	double shadow_tip_radius;
 
-	// since filledPieColor requiers angles in degrees
-	angle = rad_to_deg_approx(angle);
-
-	// draw shadow
-	filledPolygonColor(renderer, &column1_shadow_body.x1, &column1_shadow_body.y1, 4, 0xFFFFFFFF);
-	// draw tip of shadow
-	filledPieColor(renderer, shadow_far_edge_center.x, shadow_far_edge_center.y, shadow_tip_radius, angle - TIP_SHADOW_FIX_DEG, angle + 180 + TIP_SHADOW_FIX_DEG, 0xFF00FFFF);
-	// draw object
-	filledCircleColor(renderer, culumn1.x, culumn1.y, culumn1.radius, 0xFFFF0000);
-	// draw point light source
-	filledCircleColor(renderer, light.x, light.y, 20, 0xFF00FF00);
-
-	//lineColor(renderer, vx[0], vy[0], vx[1], vy[1], 0xFF0000FF);
-	//thickLineColor(renderer, vx[2], vy[2], vx[3], vy[3], 5, 0xFFFFFF00);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderPresent(renderer);
 	SDL_Event event;
 	while (SDL_WaitEvent(&event))
@@ -201,10 +205,11 @@ int main()
 			if (sqrt(pow(mouse_pos_x - culumn1.x, 2) + pow(mouse_pos_y - culumn1.y, 2)) > light.range)
 			{
 				SDL_RenderClear(renderer);
+				SDL_RenderCopy(renderer, background_texture, NULL, NULL);
 				filledCircleColor(renderer, light.x, light.y, 20, 0xFF00FF00);
-				filledCircleColor(renderer, culumn1.x, culumn1.y, culumn1.radius, 0xFFFF0000);
-				circleColor(renderer, culumn1.x, culumn1.y, 300, 0xFFFF00FF);
-				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+				filledCircleColor(renderer, culumn1.x, culumn1.y, culumn1.radius, 0xFF000000);
+				circleColor(renderer, culumn1.x, culumn1.y, light.range, 0xFFFF00FF);
+				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 				SDL_RenderPresent(renderer);
 				break;
 			}
@@ -232,19 +237,28 @@ int main()
 			// since filledPieColor requiers angles in degrees
 			angle = rad_to_deg_approx(angle);
 
+			SDL_SetRenderTarget(renderer, shadow_texture);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+			light_rect.x = mouse_pos_x - light_rect.w / 2;
+			light_rect.y = mouse_pos_y - light_rect.h / 2;
 			SDL_RenderClear(renderer);
-
 			// draw shadow
 			filledPolygonColor(renderer, &column1_shadow_body.x1, &column1_shadow_body.y1, 4, 0xFFFFFFFF);
 			// draw tip of shadow
-			filledPieColor(renderer, shadow_far_edge_center.x, shadow_far_edge_center.y, shadow_tip_radius, angle - TIP_SHADOW_FIX_DEG, angle + 180 + TIP_SHADOW_FIX_DEG, 0xFF00FFFF);
+			filledPieColor(renderer, shadow_far_edge_center.x, shadow_far_edge_center.y, shadow_tip_radius, angle - TIP_SHADOW_FIX_ANG, angle + 180 + TIP_SHADOW_FIX_ANG, 0xFFFFFFFF);
+			// fill gap betwean tip and whadow
+			thickLineColor(renderer, column1_shadow_body.x3, column1_shadow_body.y3, column1_shadow_body.x4, column1_shadow_body.y4, TIP_SHADOW_FIX_WIDTH, 0xFFFFFFFF);
+			// make shadow softer
+			SDL_RenderCopy(renderer, black_light_texture, NULL, &light_rect);
 
-
+			SDL_SetRenderTarget(renderer, NULL);
+			SDL_RenderClear(renderer);
+			SDL_RenderCopy(renderer, background_texture, NULL, NULL);
+			SDL_RenderCopy(renderer, white_light_texture, NULL, &light_rect);
+			SDL_RenderCopy(renderer, shadow_texture, NULL, NULL);
 			filledCircleColor(renderer, culumn1.x, culumn1.y, culumn1.radius, 0xFFFF0000);
-			filledCircleColor(renderer, light.x, light.y, 20, 0xFF00FF00);
-			//lineColor(renderer, vx[0], vy[0], vx[1], vy[1], 0xFF0000FF);
-			//thickLineColor(renderer, vx[2], vy[2], vx[3], vy[3], 7, 0xFFFFFF00);
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			//filledCircleColor(renderer, light.x, light.y, 20, 0xFF00FF00);
+			//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 			SDL_RenderPresent(renderer);
 			break;
 		case SDL_QUIT:
