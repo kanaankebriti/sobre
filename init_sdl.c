@@ -14,7 +14,6 @@ bool init_sdl(SDL_Renderer** renderer, SDL_Window** window)
 			WIN_WIDTH,
 			WIN_HEIGHT,
 			SDL_WINDOW_VULKAN
-			//SDL_WINDOW_VULKAN
 			//SDL_WINDOW_FULLSCREEN | SDL_WINDOW_VULKAN
 			//SDL_WINDOW_FULLSCREEN_DESKTOP
 		);

@@ -1,5 +1,5 @@
-#define TIP_SHADOW_FIX_WIDTH 3		// fill the gap!
-#define TIP_SHADOW_FIX_ANG 3		// fill the gap!
+//#define TIP_SHADOW_FIX_WIDTH 3		// fill the gap!
+//#define TIP_SHADOW_FIX_ANG 3		// fill the gap!
 
 #include "sobre_engine.h"
 #include <SDL2/SDL2_gfxPrimitives.h>
@@ -82,7 +82,7 @@ int main()
 
 	// init random seed
 	srand((unsigned int)time(NULL));
-	/*
+	
 	while (game_state != CMD_END_GAME)
 	{
 		switch (game_state)
@@ -96,7 +96,8 @@ int main()
 		case CMD_RUN_FAIL:
 			return EXIT_FAILURE;
 		}
-	}*/
+	}
+	/*
 	SDL_Surface* img_surface = NULL;
 	SDL_Texture* shadow_texture = NULL;
 	SDL_Texture* black_light_texture = NULL;
@@ -264,7 +265,7 @@ int main()
 		case SDL_QUIT:
 			goto free_up_memory_ad_return;
 		}
-free_up_memory_ad_return:
+free_up_memory_ad_return:*/
 	kill_sdl(renderer, main_window);
 	TTF_Quit();
 	Mix_CloseAudio();
