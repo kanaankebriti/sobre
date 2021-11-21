@@ -293,6 +293,13 @@ free_up_memory_and_return:
 		free(hud_tiles[i].texture_index_anim);
 	free(hud_tiles);
 	hud_tiles = NULL;
+	for (i = 0; i < game_num_of_sounds; i++)
+	{
+		Mix_FreeChunk(sounds_bank[i]);
+		sounds_bank[i] = NULL;
+	}
+	free(sounds_bank);
+	sounds_bank = NULL;
 
 	return ret_cmd;
 }

@@ -1,5 +1,7 @@
 #include "sobre_engine.h"
 
+bool backgroud_music_thread_state = true;
+
 static void music_generator_loop(Mix_Chunk** sounds_bank)
 {
 	unsigned char num_of_sounds = 0;
@@ -12,7 +14,7 @@ static void music_generator_loop(Mix_Chunk** sounds_bank)
 
 	while (true)
 	{
-		if (!*sounds_bank)																		// kill thread when sound bank has been cleared
+		if (!backgroud_music_thread_state)														// kill thread when sound bank has been cleared
 			return;
 		rand_note_num = rand() % num_of_sounds + FIRST_SOUND_ID;								// choose a random note between FIRST_SOUND_ID (reserved sounds) and num_of_sounds
 		rand_wait_time = (rand() % (NOTE_MAX_WAIT_MS - NOTE_MIN_WAIT_MS)) + NOTE_MIN_WAIT_MS;	// choose a random pause period between NOTE_MIN_WAIT_MS and NOTE_MAX_WAIT_MS
@@ -45,6 +47,7 @@ unsigned char run_main_menu(SDL_Renderer* renderer)
 	sounds_bank = load_sounds(0, &menu_num_of_sounds);
 	if (!sounds_bank)							// check if sounds has been loaded successfully
 		return CMD_RUN_FAIL;
+	backgroud_music_thread_state = true;
 
 	music_thread = SDL_CreateThread(music_generator_loop, "music_generator_loop_thread", sounds_bank);
 	if (!music_thread)							// check if background music thread has been created successfully
@@ -155,6 +158,7 @@ free_up_memory_ad_return:
 		free(menu_tiles[i].texture_index_anim);
 	free(menu_tiles);
 	menu_tiles = NULL;
+	backgroud_music_thread_state = false;
 	for (i = 0; i < menu_num_of_sounds; i++)
 	{
 		Mix_FreeChunk(sounds_bank[i]);
