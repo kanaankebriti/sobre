@@ -21,13 +21,14 @@ tiles* load_level
 	char game_num_str[3];					// save game_num as string
 	char json_path[100];					// relative path to file
 	char* json_content = 0;					// json file in char array
-	unsigned long json_file_len = 0;		// num of chars in json
+	long int json_file_len = 0;				// num of chars in json
 	FILE* json_file = NULL;					// pointer for file operations
 	cJSON* cjson_parsed = NULL;				// parsed json file object
 	cJSON* cjson_tile_array = NULL;			// array of tiles object
 	cJSON* cjson_tile_item = NULL;			// object for each tile
 	cJSON* cjson_lvl_w;						// level width
 	cJSON* cjson_lvl_h;						// level height
+	cJSON* cjson_tile_id;					// tile id property
 	cJSON* cjson_tile_x;					// tile x property
 	cJSON* cjson_tile_y;					// tile y property
 	cJSON* cjson_tile_w;					// tile width property
@@ -35,6 +36,7 @@ tiles* load_level
 	cJSON* cjson_tile_ang;					// tile angle property
 	cJSON* cjson_tile_txt;					// tile texture index property
 	cJSON* cjson_tile_type;					// tile type property
+	cJSON* cjson_tile_onClick;				// tile onClick property
 
 	#ifdef _WIN32	// windows internals
 		_itoa(game_num, game_num_str, 10);	// game number to string
@@ -96,6 +98,8 @@ tiles* load_level
 	// populate tiles
 	while (cjson_tile_item)
 	{
+		cjson_tile_id = cJSON_GetObjectItem(cjson_tile_item, "id");
+		cjson_tile_onClick = cJSON_GetObjectItem(cjson_tile_item, "onClick");
 		cjson_tile_x = cJSON_GetObjectItem(cjson_tile_item, "x");
 		cjson_tile_y = cJSON_GetObjectItem(cjson_tile_item, "y");
 		cjson_tile_w = cJSON_GetObjectItem(cjson_tile_item, "w");
@@ -108,6 +112,8 @@ tiles* load_level
 		// do not add any new tile
 		if (cjson_tile_type)
 		{
+			tile[i].id = (unsigned char)cjson_tile_id->valueint;				// id
+			strcpy(tile[i].script_path, cjson_tile_onClick->valuestring);		// onClick script
 			tile[i].rect.x = cjson_tile_x->valueint;							// relative x position
 			tile[i].rect.y = cjson_tile_y->valueint;							// relative y position
 			tile[i].rect.w = cjson_tile_w->valueint;							// width

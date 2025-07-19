@@ -1,4 +1,5 @@
 #include "sobre_engine.h"
+#include "mbasic.h"
 
 unsigned char run_hud
 (
@@ -145,9 +146,9 @@ unsigned char run_game_1(SDL_Renderer* renderer)
 		return CMD_RUN_FAIL;
 
 	// set random background colour
-	back_r = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
-	back_g = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
-	back_b = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
+	back_r = (unsigned char)((rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL);
+	back_g = (unsigned char)((rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL);
+	back_b = (unsigned char)((rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL);
 
 	// set new level background color
 	SDL_SetRenderDrawColor(renderer, back_r, back_g, back_b, 1);
@@ -197,6 +198,13 @@ unsigned char run_game_1(SDL_Renderer* renderer)
 				if (i == lvl_num_of_tiles + 1)
 					break;
 
+				// runs the associated script if defined
+				if (tile_set[i].script_path[0] != '\0') {
+					mbasic_load_script(tile_set[i].script_path);
+					mbasic_exec();
+					mbasic_destroy_prgm();
+				}
+
 				// determine pressed mouse button
 				switch (event.button.button)
 				{
@@ -234,9 +242,9 @@ unsigned char run_game_1(SDL_Renderer* renderer)
 					}
 
 					// set new random background colour
-					back_r = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
-					back_g = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
-					back_b = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
+					back_r = (unsigned char)((rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL);
+					back_g = (unsigned char)((rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL);
+					back_b = (unsigned char)((rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL);
 
 					// set new level background color
 					SDL_SetRenderDrawColor(renderer, back_r, back_g, back_b, 1);

@@ -2,6 +2,7 @@
 //#define TIP_SHADOW_FIX_ANG 3		// fill the gap!
 
 #include "sobre_engine.h"
+#include "mbasic.h"
 #include <SDL2_gfxPrimitives.h>
 
 #ifdef _WIN32
@@ -85,7 +86,10 @@ int main()
 
 	// init random seed
 	srand((unsigned int)time(NULL));
-	
+
+	// init basic interpreter
+	mbasic_init();
+
 	while (game_state != CMD_END_GAME)
 	{
 		switch (game_state)

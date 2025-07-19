@@ -9,6 +9,7 @@
 #define LINE_LEN			64			// Maximum length of each program line
 #define GOSUB_STACK_SIZE	16			// Depth of GOSUB/RETURN stack
 
-void mbasic_init();						// Initialize mbasic.
+void mbasic_init(void);					// Initialize mbasic.
 bool mbasic_load_script(char* path);	// Load a BASIC script into RAM.
-void mbasic_exec();						// Execute loaded BASIC program.
+void mbasic_exec(void);					// Execute loaded BASIC program.
+void mbasic_destroy_prgm(void);			// Destroy the loaded BASIC program from memory and reset GOSUB stack, but does not touch variables.

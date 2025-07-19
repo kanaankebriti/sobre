@@ -1,1 +1,1 @@
-10 PRINT X
+100 PRINT "Ken"

@@ -1,6 +1,6 @@
 /**
  * @file basic_interpreter.c
- * @brief A minimal, embeddable BASIC interpreter in C (~200 LOC).
+ * @brief A minimal, embeddable BASIC interpreter in C (~200 LOC) written by matthilde.
  *
  * This interpreter supports:
  *   - Line-numbered program storage (up to MAX_LINES lines, LINE_LEN each).
@@ -184,17 +184,31 @@ static int set_var(const char* name, int value) {
 // Program storage and GOSUB stack
 // -----------------------------------------------------------------------------
 
-static char prgm[MAX_LINES][LINE_LEN]; // Program lines indexed by line number
-static int  _linestack[GOSUB_STACK_SIZE]; // Stack for GOSUB line numbers
-static int  _linestackpos = 0;			// Current stack position
+static char prgm[MAX_LINES][LINE_LEN];		// Program lines indexed by line number
+static int  _linestack[GOSUB_STACK_SIZE];	// Stack for GOSUB line numbers
+static int  _linestackpos = 0;				// Current stack position
 
 /**
  * @brief Initialize program memory and GOSUB stack.
  */
 static void init_prgm(void) {
-	for (int i = 0; i < MAX_LINES; i++) prgm[i][0] = '\0';
+	for (int i = 0; i < MAX_LINES; i++)
+		prgm[i][0] = '\0';
 	_linestackpos = 0;
 }
+
+/**
+ * @brief Destroy the loaded BASIC program from memory and reset GOSUB stack, but does not touch variables.
+ */
+void mbasic_destroy_prgm(void) {
+	// Clear all program lines
+	for (int i = 0; i < MAX_LINES; ++i)
+		prgm[i][0] = '\0';
+
+	// Reset GOSUB stack
+	_linestackpos = 0;
+}
+
 
 /**
  * @brief Push current line onto GOSUB stack.
@@ -462,7 +476,7 @@ static void read_program(FILE* f) {
 /**
  * @brief Execute loaded BASIC program.
  */
-void mbasic_exec() {
+void mbasic_exec(void) {
 	for (int i = 0; i < MAX_LINES; i++)
 		i = runcmd(i, prgm[i]);
 }
@@ -470,7 +484,7 @@ void mbasic_exec() {
 /**
  * @brief Initialize mbasic.
  */
-void mbasic_init() {
+void mbasic_init(void) {
 	init_prgm();
 	init_vars();
 

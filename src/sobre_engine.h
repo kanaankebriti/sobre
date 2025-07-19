@@ -100,6 +100,8 @@ typedef struct tiles
 	unsigned char texture_index_anim_size;		// number of texture indices on animation
 	unsigned char texture_index_cur;			// current texture index
 	unsigned short int angle;					// angle respect to center
+	unsigned char id;							// assign id to each tile, so it could be addressed later by scripts.
+	char script_path[32];						// this script will be executed onClick.
 	SDL_Rect rect;								// x, y, width, height
 } tiles;
 
