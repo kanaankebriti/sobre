@@ -35,7 +35,13 @@ tiles* load_hud
 	cJSON* cjson_tile_txt_anim_size;		// number of tile texture animation index property
 
 	// game number to string
-	_itoa(game_num, game_num_str, 10);
+	#ifdef _WIN32
+		// windows internals
+		_itoa(game_num, game_num_str, 10);
+	#else
+		// standard c library
+		sprintf(game_num_str, "%hhu", game_num);
+	#endif
 
 	// form path to hud.json file
 	strcat(json_path, ASSETS_PATH_HEADER);
@@ -51,11 +57,10 @@ tiles* load_hud
 		fseek(json_file, 0, SEEK_END);
 		json_file_len = ftell(json_file);
 		fseek(json_file, 0, SEEK_SET);
-		json_content = malloc(json_file_len * sizeof(char));
+		json_content = malloc(json_file_len + 1);								// +1 for '\0'
 		if (json_content)
-		{
 			fread(json_content, 1, json_file_len, json_file);
-		}
+		json_content[json_file_len] = '\0';										// null-termination
 		fclose(json_file);
 	}
 
@@ -106,8 +111,11 @@ tiles* load_hud
 		// load animation textures indices
 		for (j = 0; j < cjson_tile_txt_anim_size->valueint; j++)
 		{
-			// form txt_anim_index name
-			_itoa(j, j_str, 10);
+			#ifdef _WIN32	// windows internals
+				_itoa(j, j_str, 10);		// form txt_anim_index name
+			#else			// standard c library
+				sprintf(j_str, "%hhu", j);
+			#endif
 			strcat(txt_anim_index, j_str);
 			// retrieve txt_anim_index from json
 			cjson_tile_txt_anim = cJSON_GetObjectItem(cjson_tile_item, txt_anim_index);

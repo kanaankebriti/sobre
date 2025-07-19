@@ -14,15 +14,10 @@ unsigned char get_selected_tile_index
 
 	// 'i' will be the selected tile index
 	for (i = 0; i < number_of_tiles; i++)
-		// greater than left side
-		if (mouse_click_x > tile[i].rect.x)
-			// less than right side
-			if(mouse_click_x < tile[i].rect.x + tile[i].rect.w)
-				// greater than top side
-				if(mouse_click_y > tile[i].rect.y)
-					// less than bottom side
-					if(mouse_click_y < tile[i].rect.y + tile[i].rect.h)
-						return i;
-
+		if (mouse_click_x > tile[i].rect.x &&					// greater than left side
+			mouse_click_x < tile[i].rect.x + tile[i].rect.w &&	// less than right side
+			mouse_click_y > tile[i].rect.y &&					// greater than top side
+			mouse_click_y < tile[i].rect.y + tile[i].rect.h)	// less than bottom side
+			return i;
 	return number_of_tiles;
 }

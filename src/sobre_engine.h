@@ -4,26 +4,28 @@
 
 #include <stdlib.h>
 
-#ifdef _DEBUG
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#ifndef DBG_NEW
-#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
-#define new DBG_NEW
-#endif
-#endif	// _DEBUG
+#ifdef _WIN32
+	#ifdef _DEBUG
+		#define _CRTDBG_MAP_ALLOC
+		#include <crtdbg.h>
+		#ifndef DBG_NEW
+			#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+			#define new DBG_NEW
+		#endif
+	#endif	// _DEBUG
 
-#include "resource.h"
+	#include "resource.h"
+	#include <windows.h>
+#endif	// _WIN32
 
-#include <windows.h>
 #include <time.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL_thread.h>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include <SDL_mixer.h>
+#include <SDL_thread.h>
 #include <cjson/cJSON.h>
 
 #define WIN_TITLE_STR "sobre"
@@ -86,7 +88,7 @@
 // this struct works for
 // level tiles
 // HUD tiles
-struct tiles
+typedef struct tiles
 {
 	// orient : 1 = up
 	// orient : 2 = right
@@ -99,7 +101,7 @@ struct tiles
 	unsigned char texture_index_cur;			// current texture index
 	unsigned short int angle;					// angle respect to center
 	SDL_Rect rect;								// x, y, width, height
-}typedef tiles;
+} tiles;
 
 unsigned char get_selected_tile_index(tiles* tile, unsigned char number_of_tiles, int mouse_click_x, int mouse_click_y);
 bool init_sdl(SDL_Renderer** renderer, SDL_Window** window);

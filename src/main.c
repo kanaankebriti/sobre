@@ -2,27 +2,30 @@
 //#define TIP_SHADOW_FIX_ANG 3		// fill the gap!
 
 #include "sobre_engine.h"
-#include <SDL2/SDL2_gfxPrimitives.h>
-#ifdef _DEBUG
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#ifndef DBG_NEW
-#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
-#define new DBG_NEW
-#endif
-#endif	// _DEBUG
+#include <SDL2_gfxPrimitives.h>
 
-#ifdef _DEBUG
-#pragma comment(lib, "SDL2d.lib")
-#else
-#pragma comment(lib, "SDL2.lib")
-#endif
+#ifdef _WIN32
+	#ifdef _DEBUG
+		#define _CRTDBG_MAP_ALLOC
+		#include <crtdbg.h>
+		#ifndef DBG_NEW
+			#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+			#define new DBG_NEW
+		#endif
+	#endif	// _DEBUG
 
-#pragma comment(lib, "SDL2_image.lib")
-#pragma comment(lib, "SDL2_ttf.lib")
-#pragma comment(lib, "SDL2_mixer.lib")
-#pragma comment(lib, "SDL2_gfx.lib")
-#pragma comment(lib, "cjson.lib")
+	#ifdef _DEBUG
+		#pragma comment(lib, "SDL2d.lib")
+	#else
+		#pragma comment(lib, "SDL2.lib")
+	#endif
+
+	#pragma comment(lib, "SDL2_image.lib")
+	#pragma comment(lib, "SDL2_ttf.lib")
+	#pragma comment(lib, "SDL2_mixer.lib")
+	#pragma comment(lib, "SDL2_gfx.lib")
+	#pragma comment(lib, "cjson.lib")
+#endif	// _WIN32
 
 // rad to deg approx
 inline double rad_to_deg_approx(double rad)

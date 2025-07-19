@@ -1,6 +1,6 @@
 #include "sobre_engine.h"
 
-// render fadeing in hovered hud
+// render fading in hovered hud
 // from edges of the screen toward center
 // texture #1 is reserved for it's texture
 // in : pointer to renderer
@@ -10,35 +10,23 @@
 // in : pointer to HUD tile_set
 // in : number of HUD tiles
 // in : index of animating HUD tile
-void render_hover_on_hud_fade_out
+void render_hover_on_hud_fade_in
 (
 	SDL_Renderer* renderer,
 	SDL_Texture* texture_bank[],
 	tiles* hud_tiles,
-	unsigned char hud_size
+	unsigned char hud_size,
+	unsigned char target_hud_index
 )
 {
-	unsigned char i, j;					// tile indices
-	unsigned char target_hud_index = 0;	// hovered HUD tile index
+	unsigned char i, j;						// tile indices
 
-	// find hovered out tile
-	// for this tile : texture_index_cur = last animation state
-	for (i = 0; i < hud_size; i++)
-		if (hud_tiles[i].texture_index_cur == hud_tiles[i].texture_index_anim[hud_tiles[i].texture_index_anim_size - 1])
-		{
-			target_hud_index = i;
-			break;
-		}
+	for (i = 0; i < hud_size; i++)			// avoid texture stuck on fast pointer movement
+		hud_tiles[i].texture_index_cur =	// set current texture index to texture #0
+		hud_tiles[i].texture_index_anim[0];
 
-	// mouse hover over blank space
-	if (i == hud_size)
-		return;
-
-	// set current animation state to last index
-	i = hud_tiles[target_hud_index].texture_index_anim_size - 1;
-
-	// animate hovered out tile from anim #n to #0
-	while (i-- > 0)
+	// animate hovered in tile from anim #0 to #n
+	for (i = 0; i < hud_tiles[target_hud_index].texture_index_anim_size; i++)
 	{
 		// curent texture = hovered texture
 		hud_tiles[target_hud_index].texture_index_cur = hud_tiles[target_hud_index].texture_index_anim[i];

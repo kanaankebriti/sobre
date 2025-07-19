@@ -1,4 +1,5 @@
 #include "sobre_engine.h"
+
 unsigned char run_hud
 (
 	SDL_Renderer* renderer,
@@ -21,11 +22,11 @@ unsigned char run_hud
 	// fade in HUD while make level tiles more transparent
 	render_fade_in_hud_from_bottom(renderer, lvl_tiles, lvl_num_of_tiles, texture_bank, hud_tiles);
 
-	// pause menu event loop
+	/* pause menu event loop */
 	while (SDL_WaitEvent(&event))
 		switch (event.type)
 		{
-			// on mouse movement
+		/* on mouse movement */
 		case SDL_MOUSEMOTION:
 			// retrive mouse relative location
 			SDL_GetMouseState(&mouse_pos_x, &mouse_pos_y);
@@ -43,11 +44,11 @@ unsigned char run_hud
 					render_hover_on_hud_fade_in_with_lvl_tiles(renderer, texture_bank, hud_tiles, hud_num_of_tiles, i, lvl_tiles, lvl_num_of_tiles);
 
 			// helps flickering reduction
-			SDL_Delay(HOVER_DELAY);
+			//SDL_Delay(HOVER_DELAY);
 
 			break;
 
-			// on mouse button press
+		/* on mouse button press */
 		case SDL_MOUSEBUTTONDOWN:
 			// retrive mouse relative location
 			SDL_GetMouseState(&mouse_pos_x, &mouse_pos_y);
@@ -84,12 +85,11 @@ unsigned char run_hud
 			}
 			break;
 
-			// on keyboard keydown
+		/* on keyboard keydown */
 		case SDL_KEYDOWN:
-		//case SDL_KEYDOWN:
 			switch (event.key.keysym.sym)
 			{
-				// press esacpe key
+			// press esacpe key
 			case SDLK_ESCAPE:
 				// reset textures opacity
 				// TODO: 2 to 6 ??!! wtf? what if indices change?
@@ -103,7 +103,7 @@ unsigned char run_hud
 				return CMD_RESUME_GAME;
 			}
 			break;
-			// on quit event such as pressing the close button
+		/* on quit event such as pressing the close button */
 		case SDL_QUIT:
 			return CMD_END_GAME;
 		}
@@ -188,68 +188,70 @@ unsigned char run_game_1(SDL_Renderer* renderer)
 					goto free_up_memory_and_return;
 				}
 			}
-			// retrive selected tile_set index
-			i = get_selected_tile_index(tile_set, lvl_num_of_tiles, mouse_pos_x, mouse_pos_y);
-
-			// check for get_selected_tile_index out of bound
-			if (i == lvl_num_of_tiles + 1)
-				break;
-
-			// determine pressed mouse button
-			switch (event.button.button)
+			else
 			{
-				// on left or right click press
-			case SDL_BUTTON_LEFT:
-				render_counterclockwise_rotation(renderer, tile_set, lvl_num_of_tiles, i, texture_bank, hud_tiles);
-				rotate_tile_counterclockwise(&tile_set[i]);
-				break;
-			case SDL_BUTTON_RIGHT:
-				render_clockwise_rotation(renderer, tile_set, lvl_num_of_tiles, i, texture_bank, hud_tiles);
-				rotate_tile_clockwise(&tile_set[i]);
-				break;
-			}
+				// retrive selected tile_set index
+				i = get_selected_tile_index(tile_set, lvl_num_of_tiles, mouse_pos_x, mouse_pos_y);
 
-			if (no_connection(tile_set, lvl_width, lvl_height))
-			{
-				// play a sound
-				Mix_PlayChannel(-1, sounds_bank[0], 0);
+				// check for get_selected_tile_index out of bound
+				if (i == lvl_num_of_tiles + 1)
+					break;
 
-				// show background wave animation
-				render_back_gc_wave_from_tile_with_hud(renderer, tile_set, lvl_num_of_tiles, texture_bank, i, hud_tiles);
-				// increase level number
-				lvl_num++;
-				// free up previous level
-				for (i = 0; i < lvl_num_of_tiles; i++)
-					free(tile_set[i].texture_index_anim);
-				free(tile_set);
-				// load new level
-				tile_set = load_level(1, lvl_num, &lvl_width, &lvl_height);
-				lvl_num_of_tiles = lvl_width * lvl_height;
-				if (!tile_set)
+				// determine pressed mouse button
+				switch (event.button.button)
 				{
-					ret_cmd = CMD_RUN_FAIL;
-					goto free_up_memory_and_return;
+					// on left or right click press
+				case SDL_BUTTON_LEFT:
+					render_counterclockwise_rotation(renderer, tile_set, lvl_num_of_tiles, i, texture_bank, hud_tiles);
+					rotate_tile_counterclockwise(&tile_set[i]);
+					break;
+				case SDL_BUTTON_RIGHT:
+					render_clockwise_rotation(renderer, tile_set, lvl_num_of_tiles, i, texture_bank, hud_tiles);
+					rotate_tile_clockwise(&tile_set[i]);
+					break;
 				}
 
-				// set new random background colour
-				back_r = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
-				back_g = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
-				back_b = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
+				if (no_connection(tile_set, lvl_width, lvl_height))
+				{
+					// play a sound
+					Mix_PlayChannel(-1, sounds_bank[0], 0);
 
-				// set new level background color
-				SDL_SetRenderDrawColor(renderer, back_r, back_g, back_b, 1);
+					// show background wave animation
+					render_back_gc_wave_from_tile_with_hud(renderer, tile_set, lvl_num_of_tiles, texture_bank, i, hud_tiles);
+					// increase level number
+					lvl_num++;
+					// free up previous level
+					for (i = 0; i < lvl_num_of_tiles; i++)
+						free(tile_set[i].texture_index_anim);
+					free(tile_set);
+					// load new level
+					tile_set = load_level(1, lvl_num, &lvl_width, &lvl_height);
+					lvl_num_of_tiles = lvl_width * lvl_height;
+					if (!tile_set)
+					{
+						ret_cmd = CMD_RUN_FAIL;
+						goto free_up_memory_and_return;
+					}
 
-				// set same random colour tone for tiles
-				for (i = FIRST_COMMON_TILE_TEXTURE_ID; i <= LAST_COMMON_TILE_TEXTURE_ID; i++)
-					SDL_SetTextureColorMod(texture_bank[i], back_r, back_g, back_b);
+					// set new random background colour
+					back_r = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
+					back_g = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
+					back_b = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
 
-				// set level counter of HUD
-				set_hud_lvl_counter_digits(hud_tiles, lvl_num);
+					// set new level background color
+					SDL_SetRenderDrawColor(renderer, back_r, back_g, back_b, 1);
 
-				// render
-				render_fade_in_gc_wave(renderer, tile_set, lvl_num_of_tiles, texture_bank, hud_tiles);
+					// set same random colour tone for tiles
+					for (i = FIRST_COMMON_TILE_TEXTURE_ID; i <= LAST_COMMON_TILE_TEXTURE_ID; i++)
+						SDL_SetTextureColorMod(texture_bank[i], back_r, back_g, back_b);
+
+					// set level counter of HUD
+					set_hud_lvl_counter_digits(hud_tiles, lvl_num);
+
+					// render
+					render_fade_in_gc_wave(renderer, tile_set, lvl_num_of_tiles, texture_bank, hud_tiles);
+				}
 			}
-
 			break;
 
 			// on keyboard keydown

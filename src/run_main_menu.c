@@ -2,11 +2,13 @@
 
 bool backgroud_music_thread_state = true;
 
-static void music_generator_loop(Mix_Chunk** sounds_bank)
+static int music_generator_loop(void *ptr)
 {
 	unsigned char num_of_sounds = 0;
 	unsigned char rand_note_num;
 	unsigned short int rand_wait_time;
+
+	Mix_Chunk **sounds_bank = (Mix_Chunk **)ptr;
 
 	// retrieve length of sounds_bank
 	while (sounds_bank[num_of_sounds])
@@ -15,12 +17,13 @@ static void music_generator_loop(Mix_Chunk** sounds_bank)
 	while (true)
 	{
 		if (!backgroud_music_thread_state)														// kill thread when sound bank has been cleared
-			return;
-		rand_note_num = rand() % num_of_sounds + FIRST_SOUND_ID;								// choose a random note between FIRST_SOUND_ID (reserved sounds) and num_of_sounds
-		rand_wait_time = (rand() % (NOTE_MAX_WAIT_MS - NOTE_MIN_WAIT_MS)) + NOTE_MIN_WAIT_MS;	// choose a random pause period between NOTE_MIN_WAIT_MS and NOTE_MAX_WAIT_MS
+			return true;	// TODO: handle this properly
+		rand_note_num = (unsigned char)(rand() % num_of_sounds + FIRST_SOUND_ID);								// choose a random note between FIRST_SOUND_ID (reserved sounds) and num_of_sounds
+		rand_wait_time = (unsigned short int)((rand() % (NOTE_MAX_WAIT_MS - NOTE_MIN_WAIT_MS)) + NOTE_MIN_WAIT_MS);	// choose a random pause period between NOTE_MIN_WAIT_MS and NOTE_MAX_WAIT_MS
 		Mix_PlayChannel(-1, sounds_bank[rand_note_num], 0);										// play the note
 		SDL_Delay(rand_wait_time);																// make a pause
 	}
+	return true;			// TODO: handle this properly
 }
 
 unsigned char run_main_menu(SDL_Renderer* renderer)
@@ -55,9 +58,10 @@ unsigned char run_main_menu(SDL_Renderer* renderer)
 	SDL_DetachThread(music_thread);				// background music loop is running forever and detached from game
 
 	// set random background colour
-	back_r = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
-	back_g = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
-	back_b = (rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL;
+	back_r = (unsigned char)((rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL);
+	back_g = (unsigned char)((rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL);
+	back_b = (unsigned char)((rand() % (COLOR_MAX_ILL - COLOR_MIN_ILL)) + COLOR_MIN_ILL);
+
 
 	// set same random colour tone for tiles
 	for (i = FIRST_COMMON_TILE_TEXTURE_ID; i <= LAST_COMMON_TILE_TEXTURE_ID; i++)
@@ -89,7 +93,7 @@ unsigned char run_main_menu(SDL_Renderer* renderer)
 					render_hover_on_hud_fade_in(renderer, texture_bank, menu_tiles, menu_num_of_tiles, i);
 
 			// helps flickering reduction
-			SDL_Delay(HOVER_DELAY);
+			//SDL_Delay(HOVER_DELAY);
 
 			break;
 

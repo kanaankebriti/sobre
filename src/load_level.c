@@ -36,10 +36,13 @@ tiles* load_level
 	cJSON* cjson_tile_txt;					// tile texture index property
 	cJSON* cjson_tile_type;					// tile type property
 
-	// game number to string
-	_itoa(game_num, game_num_str, 10);
-	// level number to string
-	_itoa(lvl_num, lvl_num_str, 10);
+	#ifdef _WIN32	// windows internals
+		_itoa(game_num, game_num_str, 10);	// game number to string
+		_itoa(lvl_num, lvl_num_str, 10);	// level number to string
+	#else			// standard c library
+		sprintf(game_num_str, "%hhu", game_num);
+		sprintf(lvl_num_str, "%hhu", lvl_num);
+	#endif
 
 	// form path to lvl[x].json file
 	strcpy(json_path, ASSETS_PATH_HEADER);
@@ -57,11 +60,10 @@ tiles* load_level
 		fseek(json_file, 0, SEEK_END);
 		json_file_len = ftell(json_file);
 		fseek(json_file, 0, SEEK_SET);
-		json_content = malloc(json_file_len * sizeof(char));
+		json_content = malloc(json_file_len + 1);								// +1 for '\0'
 		if (json_content)
-		{
 			fread(json_content, 1, json_file_len, json_file);
-		}
+		json_content[json_file_len] = '\0';										// null-termination
 		fclose(json_file);
 	}
 
